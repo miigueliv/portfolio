@@ -94,8 +94,8 @@ footer{border-top:1px solid var(--line);padding:32px 0 48px;color:var(--mute);fo
 .svcpanel.mirror .svctext{order:1}
 .svcflow{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:clamp(18px,2.4vw,32px)}
 .svctext h3{font:400 clamp(1.7rem,3.2vw,2.6rem)/1.05 "Zen Dots",Michroma,sans-serif;margin:0 0 14px}
-.svcsub{font:600 clamp(1rem,1.5vw,1.18rem)/1.35 "Instrument Sans",sans-serif;color:var(--acc);margin:0 0 22px}
 .svctext p{color:var(--mute);line-height:1.65;margin:0 0 14px}
+.svctext h3+p{color:var(--ink);font-size:1.05rem;margin-bottom:18px}
 .svctext h4{font:600 .78rem "Instrument Sans",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin:30px 0 14px}
 .svcres{list-style:none;padding:0;margin:0 0 28px}
 .svcres li{position:relative;padding-left:30px;margin-bottom:11px;color:var(--ink)}
