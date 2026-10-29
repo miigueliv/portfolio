@@ -39,7 +39,8 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 ## How we work (agreed with Miguel)
 - The folder is the source of truth. It is a git repo, so every change is reversible.
 - Save points: at the end of each working session, update this file and make one commit summarising what changed. Miguel is new to git, so explain in plain language and never run destructive commands without asking.
-- Not on GitHub yet, by choice. Local git only for now; we add GitHub when Miguel is ready to publish.
+- Backed up to GitHub: git@github.com:miigueliv/portfolio.git (PRIVATE repo, SSH key auth). After saving a checkpoint, also run `git push` so the backup stays current.
+- The repo being private is deliberate. Do not make it public, and do not enable GitHub Pages, until Miguel explicitly says he wants the site live.
 - Do not deploy or publish anything until Miguel explicitly says so.
 - Preview with the "portfolio" server in .claude/launch.json (python3 http.server on port 4321, bound to 127.0.0.1 so it stays private).
 - ALWAYS start that preview server at the beginning of a session and give Miguel the link: http://localhost:4321. He should never have to ask to see his own site.
