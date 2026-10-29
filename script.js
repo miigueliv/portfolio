@@ -16,11 +16,14 @@ const io2=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.targe
 document.querySelectorAll('.case,.panel,.flow').forEach(c=>io2.observe(c));
 
 const ftabs=document.querySelector('.ftabs');
-if(ftabs){const flows=document.querySelectorAll('.flow');
+if(ftabs){const track=document.querySelector('.svctrack');
+const panels=document.querySelectorAll('.svcpanel');
 const shut=()=>document.querySelectorAll('.fnode.is-open').forEach(o=>{o.classList.remove('is-open');o.setAttribute('aria-expanded','false')});
-ftabs.querySelectorAll('button').forEach(t=>t.addEventListener('click',()=>{shut();
-ftabs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===t));
-flows.forEach(f=>{const on=f.dataset.flow===t.dataset.flow;f.hidden=!on;if(on)f.classList.add('in')})}));
+const show=k=>{shut();track.dataset.active=k;
+ftabs.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.flow===k));
+panels.forEach(p=>{const on=p.dataset.flow===k;p.inert=!on;p.setAttribute('aria-hidden',String(!on));if(on)p.querySelector('.flow').classList.add('in')})};
+ftabs.querySelectorAll('button').forEach(t=>t.addEventListener('click',()=>show(t.dataset.flow)));
+show('gen');
 document.querySelectorAll('.fnode').forEach(n=>n.addEventListener('click',()=>{const was=n.classList.contains('is-open');shut();
 if(!was){n.classList.add('is-open');n.setAttribute('aria-expanded','true')}}));
 addEventListener('click',e=>{if(!e.target.closest('.fnode'))shut()});
