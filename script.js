@@ -3,10 +3,16 @@ const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target
 document.querySelectorAll('.bars').forEach(b=>io.observe(b));
 
 const lb=document.getElementById('lb');
-if(lb){document.querySelectorAll('.chips button').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('.chips button').forEach(x=>x.setAttribute('aria-pressed',x===c));
-document.querySelectorAll('.grid button').forEach(b=>b.hidden=c.dataset.f!=='all'&&b.dataset.b!==c.dataset.f)}));
-document.querySelectorAll('.grid button').forEach(b=>b.addEventListener('click',()=>{const i=b.querySelector('img');lb.firstElementChild.src=i.src;lb.firstElementChild.alt=i.alt;lb.hidden=false}));
-lb.addEventListener('click',()=>lb.hidden=true);addEventListener('keydown',e=>{if(e.key==='Escape')lb.hidden=true})}
+if(lb){const lbimg=lb.querySelector('img'),lbx=lb.querySelector('.lbx'),count=document.querySelector('.fcount'),cards=[...document.querySelectorAll('.grid button')];
+let opener=null;
+document.querySelectorAll('.chips button').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('.chips button').forEach(x=>x.setAttribute('aria-pressed',x===c));
+cards.forEach(b=>b.hidden=c.dataset.f!=='all'&&b.dataset.b!==c.dataset.f);
+const n=cards.filter(b=>!b.hidden).length;
+count.textContent=c.dataset.f==='all'?'Showing all '+n+' ads':'Showing '+n+(n===1?' ad':' ads')+' for '+c.dataset.f}));
+const close=()=>{if(lb.hidden)return;lb.hidden=true;lbimg.removeAttribute('src');if(opener){opener.focus();opener=null}};
+cards.forEach(b=>b.addEventListener('click',()=>{const i=b.querySelector('img');lbimg.src=i.src;lbimg.alt=i.alt;opener=b;lb.hidden=false;lbx.focus()}));
+lb.addEventListener('click',close);
+addEventListener('keydown',e=>{if(lb.hidden)return;if(e.key==='Escape'){close();return}if(e.key==='Tab'){e.preventDefault();lbx.focus()}})}
 
 const pr=document.querySelector('.pg');
 if(pr&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const bs=pr.querySelectorAll('b[data-n]'),fmt=(b,v)=>b.textContent=(b.dataset.pre||'')+v+(b.dataset.suf||'');bs.forEach(b=>fmt(b,0));

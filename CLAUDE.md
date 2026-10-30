@@ -6,8 +6,12 @@ Static portfolio site for Miguel Rodrigues, B2B demand generation marketer in Am
 Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in a browser to preview.
 - Pages: index.html, work.html, ads.html, about.html, contact.html
 - Shared: style.css, script.js
-- Images: banner.jpg (green flash), me-cut.webp (cut-out photo), me.jpg, player-card.png (About hero), great-guy.png (footer badge), logos/ (tool logos), clients/ (client logos), ads/ (ad-01 to ad-18), icons/ (interest icons)
+- Images: banner.jpg (green flash), me-cut.webp (cut-out photo), me.jpg, player-card.webp (About hero), og.jpg (link preview card), great-guy.png (footer badge), logos/ (tool logos), clients/ (client logos), ads/ (ad-01 to ad-18), icons/ (interest icons)
 - Images Miguel supplies are huge. Downscale before use with `sips -Z 240 file.png` (macOS built-in, keeps transparency). There is no PIL or ImageMagick on this machine. The interest icons went from 8.7 MB to 308 KB this way.
+- `sips` cannot write WebP: `sips -s format webp` silently produces no file. To make a WebP, render it through headless Chrome instead: a tiny HTML page that draws the image on a canvas and prints `canvas.toDataURL('image/webp',0.85)` into a div, then
+  `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --allow-file-access-from-files --virtual-time-budget=15000 --dump-dom file:///tmp/enc.html`
+  and base64-decode the result. This is how player-card went from 2222 KB to 106 KB.
+- Headless Chrome is also the reliable way to take a real desktop screenshot: `--window-size=1280,860 --screenshot=/tmp/x.png http://localhost:4321/index.html`. The preview tool's own screenshot only captures the leftmost ~400px when the viewport is wide.
 
 ## Design system (keep unless Miguel asks)
 - Colors: background #070C05, panel #0E1709, ink #F2F7EA, muted #A3B095, line #223019, accent #CFE8A9
@@ -18,13 +22,14 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 ## Page notes
 - Home: hero with name, subtitle, "Open to Demand Gen and Growth roles in B2B" pill and buttons on the left; cut-out photo with two rotating rings of tool logos on the right; small green flash in the top-left corner. Then a moving strip of client logos, career stats (4+ years, €4M+ pipeline, 20+ brands), the What I do diagram, highlight card (144 MQLs, €150K+ pipeline).
 - Work: four numbered cases. Left column is number, title, client logos; right column is the intro, stats and the "What I did" accordion. Order: Impact Negotiation Group (Sprints & Sneakers client), SurePay (via Dapper), Founder Sales course (Startupbootcamp x Academy of the Future), Investor Pipeline (Startupbootcamp). SurePay has no stats block on purpose: see the effort-vs-outcome rule below.
-- Ad library: 18 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other. No hero glow here, on purpose.
+- Ad library: 18 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other. No hero glow here, on purpose. Under the filters a `.fcount` line with `role="status"` announces how many ads are showing. Clicking an ad opens `#lb`, a real dialog: `role="dialog"`, `aria-modal`, a 48x48 close button, focus moves into it, Tab is trapped on the close button, and Escape returns focus to the ad that was clicked.
 - About: player card hero, experience timeline, skills, tools, education, "Other interests" cards, closing CTA. See "About page redesign" below.
 - Contact: email, LinkedIn, based in Amsterdam, open to roles.
 
 ## Components that have specific rules
 - What I do diagram (home): two flows, "Demand generation" and "Demand capture", switched by the .ftabs buttons (data-flow="gen" / data-flow="cap"). Inspired by noticed.co but reworded as Miguel's own. Every node is green, including the outcome nodes; hovering a node shows a one-line plain-English explanation. Do not reintroduce removed steps (Content Pillars, Ad Angles, Multi-Channel Campaign, Retargeting Ads, Conversations Started, Sales Follow Up). Qualified Pipeline is the final outcome of Demand capture.
-- Hero photo (home): must ALWAYS sit beside the title on the right, never stack underneath, at any width. The layout uses clamp() and minmax(0,Nfr) so it shrinks instead of wrapping. The photo and orbit are illustration, so shrinking them is fine.
+- Hero photo (home): sits beside the title on the right at every width ABOVE 560px, and must never stack there. The layout uses clamp() and minmax(0,Nfr) so it shrinks instead of wrapping. The photo and orbit are illustration, so shrinking them is fine.
+  - BELOW 560px it stacks under the title. Miguel approved this on 30 Oct 2026 after seeing the measurements: side by side on a 375px screen left only 186px for the title, so the name broke over two lines and the green pill wrapped. Stacking gives the title the full 327px and the photo 290px. This is the one deliberate exception; do not extend it above 560px.
 - Hero photo fade: the photo itself stays fully opaque. The fade to background is a separate .orbitstage:after gradient in var(--bg) sitting on top at z-index 3. Do not use mask-image on the photo: that makes it semi-transparent and the orbit logos show through his torso.
 - Logo strip (home): .marq, duplicated .marqset for a seamless loop. Both sets must stay identical or the loop jumps. Logos are grayscale and low opacity on purpose; they are there for authority, not attention.
 - Work card hierarchy: the title is the dominant element, the number is a small muted index label, the logos are quiet support below a divider. Do not make the number big again.
@@ -33,6 +38,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
   - .fnav is a <nav>, so it inherits the global nav rules. It needs align-items:start and padding:0, and .fnav a needs padding:0 and border-bottom:0, or the columns misalign and script.js puts a green underline on the current page link.
   - The wordmark says "Miguel" only, not the full name. Fewer letters means bigger letters at the same width.
   - The badge sits straight. It was tilted once and Miguel asked for it straight.
+- Skip link: every page starts with `<a class="skip" href="#main">Skip to content</a>` and the first element after the nav carries `id="main" tabindex="-1"`. It is invisible until a keyboard user tabs to it.
 - Hero glow: the green flash is .hero2:before on Home. Work, About and Contact reuse it through the shared .glowhead class (same image and mask, 400px tall instead of 520px). Ad library has no glow on purpose. Do not put overflow-x:clip on a header that carries .glowhead; it cuts the glow off with a hard vertical line.
 
 ## About page redesign (DONE, 30 Oct 2026)
@@ -93,9 +99,9 @@ Decisions taken:
 - Waiting on Miguel: a "My role" line per case
 - Decide: "ICP Research" is currently the first node in BOTH flows with different tooltips. Suggested fix: "Audience Research" for Demand generation, "Account Research" for Demand capture. Miguel has not chosen yet.
 - Confirm which MQL figure was changed to make 144 (quiz set to 21)
-- NEXT: og:image and og:url. Pasting the live link into LinkedIn or WhatsApp currently shows an empty rectangle. This matters now that Miguel is sending the link to recruiters.
-- NEXT: the About page is broken on mobile. .ahero does not stack (a later unconditional rule beats the media query), .ints is 3 crushed columns, .subs is 2. The other four pages are fine. Audited at 375x812, not fixed.
-- baby.png and me.jpg are in the repo but used by no page.
+- og:image and og:url are DONE (30 Oct 2026). og.jpg is a 1200x630 card: name in Zen Dots, the tagline, the green pill and the cut-out photo on a dark background. It was generated with headless Chrome from a throwaway HTML file, so to change it, rebuild it the same way. LinkedIn and WhatsApp cache previews, so a change can take a day to show up; LinkedIn's Post Inspector forces a refresh.
+- Mobile was fixed on 30 Oct 2026. All the mobile rules now live in ONE block at the END of style.css, and they have to stay there: earlier media queries were silently defeated by unconditional rules written further down the file. If a mobile fix seems to do nothing, check for a later rule overriding it before changing anything else.
+- baby.png (252 KB), me.jpg (136 KB) and now player-card.png (2222 KB) are in the repo but used by no page. Ask Miguel before deleting any of them.
 - The Experience timeline on About is still just five job titles and dates, a worse version of his LinkedIn. It needs one outcome line per role. Waiting on Miguel's numbers.
 - The hero line "a camera that came before the marketing career" is never paid off anywhere on the site. He freelanced as a photographer, which is a real differentiator for someone running ads. Worth a section of his own photos.
 - great-guy.png stays exactly as it is, red and navy. It is the only non-green element on the site. Raised with Miguel twice; decision closed. Do not offer to recolour it again.
