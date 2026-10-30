@@ -33,6 +33,5 @@ addEventListener('keydown',e=>{if(e.key==='Escape')shut()})}
 document.querySelectorAll('.more').forEach(m=>{const b=m.querySelector('.more-btn'),card=m.closest('.case');
 const set=o=>{m.classList.toggle('is-open',o);b.setAttribute('aria-expanded',o)};
 b.addEventListener('click',()=>set(!m.classList.contains('is-open')));
-if(matchMedia('(hover:hover)').matches)b.addEventListener('mouseenter',()=>set(true));
 new IntersectionObserver(e=>{if(e[0].isIntersecting||!m.classList.contains('is-open'))return;
 if(card.getBoundingClientRect().bottom<0){const h0=card.offsetHeight;m.classList.add('instant');set(false);scrollBy(0,card.offsetHeight-h0);requestAnimationFrame(()=>requestAnimationFrame(()=>m.classList.remove('instant')))}else set(false)},{threshold:0}).observe(card)});

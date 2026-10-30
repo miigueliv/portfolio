@@ -6,7 +6,8 @@ Static portfolio site for Miguel Rodrigues, B2B demand generation marketer in Am
 Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in a browser to preview.
 - Pages: index.html, work.html, ads.html, about.html, contact.html
 - Shared: style.css, script.js
-- Images: banner.jpg (green flash), me-cut.webp (cut-out photo), me.jpg, logos/ (tool logos), clients/ (client logos), ads/ (ad-01 to ad-18)
+- Images: banner.jpg (green flash), me-cut.webp (cut-out photo), me.jpg, player-card.png (About hero), great-guy.png (footer badge), logos/ (tool logos), clients/ (client logos), ads/ (ad-01 to ad-18), icons/ (interest icons)
+- Images Miguel supplies are huge. Downscale before use with `sips -Z 240 file.png` (macOS built-in, keeps transparency). There is no PIL or ImageMagick on this machine. The interest icons went from 8.7 MB to 308 KB this way.
 
 ## Design system (keep unless Miguel asks)
 - Colors: background #070C05, panel #0E1709, ink #F2F7EA, muted #A3B095, line #223019, accent #CFE8A9
@@ -18,7 +19,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 - Home: hero with name, subtitle, "Open to Demand Gen and Growth roles in B2B" pill and buttons on the left; cut-out photo with two rotating rings of tool logos on the right; small green flash in the top-left corner. Then a moving strip of client logos, career stats (4+ years, €4M+ pipeline, 20+ brands), the What I do diagram, highlight card (144 MQLs, €150K+ pipeline).
 - Work: four numbered cases. Left column is number, title, client logos; right column is the intro, stats and the "What I did" accordion. Order: Impact Negotiation Group (Sprints & Sneakers client), SurePay (via Dapper), Founder Sales course (Startupbootcamp x Academy of the Future), Investor Pipeline (Startupbootcamp). SurePay has no stats block on purpose: the only numbers available described the work, not the outcome, so they were removed rather than faked. Waiting on a real result figure from Dapper.
 - Ad library: 18 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other.
-- About: intro text plus the same orbit photo, experience timeline, skills, tools, education in cards. BEING REDESIGNED, see "About page redesign" below.
+- About: player card hero, experience timeline, skills, tools, education, "Other interests" cards, closing CTA. See "About page redesign" below.
 - Contact: email, LinkedIn, based in Amsterdam, open to roles.
 
 ## Components that have specific rules
@@ -27,40 +28,37 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 - Hero photo fade: the photo itself stays fully opaque. The fade to background is a separate .orbitstage:after gradient in var(--bg) sitting on top at z-index 3. Do not use mask-image on the photo: that makes it semi-transparent and the orbit logos show through his torso.
 - Logo strip (home): .marq, duplicated .marqset for a seamless loop. Both sets must stay identical or the loop jumps. Logos are grayscale and low opacity on purpose; they are there for authority, not attention.
 - Work card hierarchy: the title is the dominant element, the number is a small muted index label, the logos are quiet support below a divider. Do not make the number big again.
+- Footer (all five pages, identical markup): tagline, "Great Guy To Work With" badge, two link columns (Pages, Elsewhere), legal line, then "Miguel" in Zen Dots at 25vw across the full viewport width. Rules that are load-bearing:
+  - The footer must NOT have overflow:hidden. The footer sits inside .wrap (1080px), so overflow:hidden clips the full-width wordmark at the container edge and cuts the last letter off. The clipping belongs on .fword itself.
+  - .fnav is a <nav>, so it inherits the global nav rules. It needs align-items:start and padding:0, and .fnav a needs padding:0 and border-bottom:0, or the columns misalign and script.js puts a green underline on the current page link.
+  - The wordmark says "Miguel" only, not the full name. Fewer letters means bigger letters at the same width.
+  - The badge sits straight. It was tilted once and Miguel asked for it straight.
+- Hero glow: the green flash is .hero2:before on Home. Work, About and Contact reuse it through the shared .glowhead class (same image and mask, 400px tall instead of 520px). Ad library has no glow on purpose. Do not put overflow-x:clip on a header that carries .glowhead; it cuts the glow off with a hard vertical line.
 
-## About page redesign (in progress, paused on 29 Oct 2026)
-Goal: show a bit of Miguel the person, not just the professional. Short, not corny,
-memorable enough that a recruiter wants to work with him. He asked for advice and a
-copy draft first, not a build. Nothing has been changed in about.html yet.
+## About page redesign (DONE, 30 Oct 2026)
+Built differently from the plan that was on hold. The country-by-country "short
+version" and the travel photos were dropped; Miguel went another way.
 
-Agreed structure:
-1. Hero: keep "Demand gen, with a sales background" plus the sales-to-marketing lines.
-   Move the countries, languages and hobbies paragraph OUT of the hero.
-2. The short version (NEW): baby photo, then Portugal, Croatia, Spain, Netherlands,
-   one line each, with travel photos alongside.
-3. Experience timeline: unchanged.
-4. Outside work (NEW): five small cards, one icon and one line each. Surfing, nature,
-   sports, photography, chess.
-5. Skills, Tools, Education: unchanged.
+What is actually on the page now, in order:
+1. Hero: "But who's Miguel?" plus the sales-to-marketing lines, beside a FUT-style
+   player card (player-card.png) of him as a toddler. Caption: "Based on the Big Five
+   (OCEAN) personality test."
+2. Experience timeline.
+3. Skills and Tools, side by side.
+4. Education.
+5. Other interests: six cards, each a 3D icon plus one line. Order is fixed and
+   deliberate: Basketball, Traveling, History, Chess, Cinema, Surf. Surf is last.
+6. Closing CTA "Still here?" with Email, LinkedIn and See the work.
 
 Decisions taken:
-- Drop the spinning tool-logo orbit photo from About. It is the home page's signature
-  move and repeating it makes About feel like a rerun.
-- The design elements Miguel is sending (ocean wave, basketball, mountain) are to be
-  used as SMALL line icons in accent green only. Large illustrations tip into corny.
-- Lead on photography: he freelanced as a photographer, which is a real differentiator
-  for someone running ads. Prefer showing a few of his own photos over photos of him.
-
-Waiting on Miguel before this can be built:
-- The photos themselves, saved into the portfolio folder. Pasted chat images never
-  reach the filesystem, so he has to drag the files in. Planned folder: portfolio/life/
-- One line per country: Portugal, Croatia, Spain, Netherlands. Why he went, what changed.
-- Birth city and year, for the baby photo caption.
-- Which sports he plays versus watches.
-- One line on chess, and one on surfing.
-- Year he moved to Amsterdam and why.
-He has: a baby photo, travel photos including one sand boarding (he has no surfing shot),
-and design elements.
+- The spinning tool-logo orbit was dropped from About. It is the home page's signature
+  move and repeating it made About feel like a rerun.
+- OVERRIDES the earlier "small flat line icons in accent green only" rule. Miguel
+  supplied full-colour 3D claymation-style renders and they are what is on the page.
+- The card says Structure 62. The OCEAN test actually scored Conscientiousness 50.
+  This was raised with Miguel in full and he chose to keep 62. Decision closed, do not
+  reopen it.
+- A baby.png was added early on and is now unused. Left in the folder on purpose.
 
 ## Rules
 - Never invent numbers, quotes or claims. Only use what Miguel provides.
@@ -90,4 +88,6 @@ and design elements.
 - Decide: "ICP Research" is currently the first node in BOTH flows with different tooltips. Suggested fix: "Audience Research" for Demand generation, "Account Research" for Demand capture. Miguel has not chosen yet.
 - Confirm which MQL figure was changed to make 144 (quiz set to 21)
 - Later, once Miguel approves publishing: GitHub repo, GitHub Pages, then an og:image share preview with the live URL
-- Possibly make the About photo static so the orbit is unique to Home
+- The Experience timeline on About is still just five job titles and dates, a worse version of his LinkedIn. It needs one outcome line per role. Waiting on Miguel's numbers.
+- The hero line "a camera that came before the marketing career" is never paid off anywhere on the site. He freelanced as a photographer, which is a real differentiator for someone running ads. Worth a section of his own photos.
+- great-guy.png is a near-exact copy of the Great Place To Work(R) badge, red and navy, with the (R) symbol intact. It is the only non-green element on the site. This was raised with Miguel twice; he wants it kept as it is. Do not offer to recolour it again.
