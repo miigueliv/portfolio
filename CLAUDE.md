@@ -18,6 +18,18 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 - Fonts: Zen Dots for his name, page titles and big numbers; Instrument Sans for everything else
 - Cards: dark panel, rounded 24px, thin green border, soft green glow in the top-left corner, no white top line
 - Buttons: pill shaped, accent fill or outline
+- Elevation (added 30 Oct 2026, and this is the part that is easy to get wrong):
+  on a `#070C05` page a black shadow is INVISIBLE. Black over near-black is 7
+  levels of difference out of 255. A first attempt used `rgba(0,0,0,.95)`
+  shadows and Miguel could not see a single change. **Height is read as
+  lightness, not as shadow.** Each level up is a lighter surface:
+  `--surf1:#131E0C` for a card on the page, `--surf2:#1A2812` for that card on
+  hover, `--edge1:#2E4021` for its border (lighter than `--line`), plus a
+  `--sheen` wash down from the top and a 1px lit top edge. Shadows are kept
+  tight and green-tinted; their only job is to stop the lighter card bleeding
+  into the page. Things that sit INSIDE a card go the other way and get darker
+  (`.case .stats` is `rgba(5,9,4,.55)`), so they read as cut into it.
+  Tokens live in the block near the end of style.css, above the mobile block.
 
 ## Page notes
 - Home: hero with name, subtitle, "Open to Demand Gen and Growth roles in B2B" pill and buttons on the left; cut-out photo with two rotating rings of tool logos on the right; small green flash in the top-left corner. Then a moving strip of client logos, career stats (4+ years, €4M+ pipeline, 20+ brands), the What I do diagram, highlight card (144 MQLs, €150K+ pipeline).
@@ -28,6 +40,11 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 
 ## Components that have specific rules
 - What I do diagram (home): two flows, "Demand generation" and "Demand capture", switched by the .ftabs buttons (data-flow="gen" / data-flow="cap"). Inspired by noticed.co but reworded as Miguel's own. Every node is green, including the outcome nodes; hovering a node shows a one-line plain-English explanation. Do not reintroduce removed steps (Content Pillars, Ad Angles, Multi-Channel Campaign, Retargeting Ads, Conversations Started, Sales Follow Up). Qualified Pipeline is the final outcome of Demand capture.
+  - `.svcflow` must NOT get `overflow:hidden`: the `.ft` tooltips have to escape
+    the card. That also means it must not get the straight 1px `:before` top
+    edge the other cards use, because without the clip that bar sticks out past
+    the rounded corner. Miguel spotted exactly this. Its top edge comes from the
+    `inset 0 1px 0` in `--e1`, which follows the border radius.
 - Hero photo (home): sits beside the title on the right at every width ABOVE 560px, and must never stack there. The layout uses clamp() and minmax(0,Nfr) so it shrinks instead of wrapping. The photo and orbit are illustration, so shrinking them is fine.
   - BELOW 560px it stacks under the title. Miguel approved this on 30 Oct 2026 after seeing the measurements: side by side on a 375px screen left only 186px for the title, so the name broke over two lines and the green pill wrapped. Stacking gives the title the full 327px and the photo 290px. This is the one deliberate exception; do not extend it above 560px.
 - Hero photo fade: the photo itself stays fully opaque. The fade to background is a separate .orbitstage:after gradient in var(--bg) sitting on top at z-index 3. Do not use mask-image on the photo: that makes it semi-transparent and the orbit logos show through his torso.
@@ -48,8 +65,9 @@ version" and the travel photos were dropped; Miguel went another way.
 What is actually on the page now, in order:
 1. Hero: "But who's Miguel?" plus the sales-to-marketing lines, ending on
    "Portuguese, based in Amsterdam." Beside it a FUT-style player card
-   (player-card.png) of him as a toddler, captioned "Stats based on the Big Five
-   (OCEAN) personality test."
+   (player-card.webp) of him as a toddler, captioned "Stats based on the Big Five
+   (OCEAN) personality test." Miguel asked for it 20% smaller on 30 Oct 2026:
+   360px to 288px on desktop, 300px to 240px on mobile.
 2. Experience card. The timeline, then a thin divider, then Languages and Education
    as two columns of small chips inside the SAME card (.subs). They were separate
    cards once; Miguel asked for them folded in to save vertical space.
@@ -100,6 +118,15 @@ Decisions taken:
 - Decide: "ICP Research" is currently the first node in BOTH flows with different tooltips. Suggested fix: "Audience Research" for Demand generation, "Account Research" for Demand capture. Miguel has not chosen yet.
 - Confirm which MQL figure was changed to make 144 (quiz set to 21)
 - og:image and og:url are DONE (30 Oct 2026). og.jpg is a 1200x630 card: name in Zen Dots, the tagline, the green pill and the cut-out photo on a dark background. It was generated with headless Chrome from a throwaway HTML file, so to change it, rebuild it the same way. LinkedIn and WhatsApp cache previews, so a change can take a day to show up; LinkedIn's Post Inspector forces a refresh.
+- The design-polish block near the end of style.css (surfaces, type scale,
+  spacing tokens) also has to stay ABOVE the mobile block and BELOW everything
+  else, for the same source-order reason. It fixed one real bug: `.svctext h3`
+  was 41.6px while its own section's `.svc h2` was 35.2px, so the child outranked
+  the parent. It also replaced five different section paddings and four corner
+  radii with one scale (--s1..--s6, --r-sm, --r-md).
+- Still not applied, suggested and not yet approved: rebuild the Contact page
+  (it is about 60% empty), a sticky blurred nav, a subtle scroll-reveal, and
+  raising the logo strip from opacity .42 so it is not quite so faint.
 - Mobile was fixed on 30 Oct 2026. All the mobile rules now live in ONE block at the END of style.css, and they have to stay there: earlier media queries were silently defeated by unconditional rules written further down the file. If a mobile fix seems to do nothing, check for a later rule overriding it before changing anything else.
 - baby.png (252 KB), me.jpg (136 KB) and now player-card.png (2222 KB) are in the repo but used by no page. Ask Miguel before deleting any of them.
 - The Experience timeline on About is still just five job titles and dates, a worse version of his LinkedIn. It needs one outcome line per role. Waiting on Miguel's numbers.

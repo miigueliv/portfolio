@@ -243,7 +243,7 @@ h2{font-size:clamp(1.5rem,3.2vw,2.2rem)}
 @media(max-width:760px){.cgrid{grid-template-columns:1fr}}
 
 .fut{margin:0;display:grid;justify-items:center;gap:10px;justify-self:center}
-.futcard{width:min(360px,100%);height:auto;filter:drop-shadow(0 26px 34px rgba(0,0,0,.75))}
+.futcard{width:min(288px,100%);height:auto;filter:drop-shadow(0 26px 34px rgba(0,0,0,.75))}
 .fut figcaption{font-size:.82rem;color:var(--mute);text-align:center}
 
 .ahero{grid-template-columns:1.1fr 1fr}
@@ -334,12 +334,82 @@ html,body{overflow-x:clip}
 .close p{max-width:54ch;margin:14px auto 0}
 .close .actions{margin-top:28px;margin-bottom:0}
 
+/* ---- Depth, type hierarchy and spacing rhythm ----
+   Three things, deliberately together: a surface system so cards sit above the
+   page instead of being drawn on it, one consistent type scale, and one
+   vertical rhythm. Must stay above the mobile block at the end of the file. */
+:root{
+--s1:8px;--s2:16px;--s3:24px;--s4:40px;--s5:64px;--s6:96px;
+--r-sm:16px;--r-md:24px;
+/* Surfaces. On a #070C05 page, elevation CANNOT come from a black shadow:
+   black on near-black is 7 levels of difference out of 255, invisible.
+   Height is read as LIGHTNESS instead. Each level is a lighter surface. */
+--surf1:#131E0C;   /* a card sitting on the page */
+--surf2:#1A2812;   /* the same card raised, on hover */
+--sheen:linear-gradient(180deg,rgba(242,247,234,.06),rgba(242,247,234,0) 180px);
+--edge1:#2E4021;   /* card border, lighter than --line so the edge reads */
+--edge2:#44603073;
+/* The shadow's only job is to stop the lighter card bleeding into the page,
+   so it is green-tinted and tight, not a big black blur. */
+--e1:0 1px 0 rgba(242,247,234,.09) inset,0 16px 34px -22px #000,0 0 0 1px rgba(207,232,169,.03);
+--e2:0 1px 0 rgba(242,247,234,.14) inset,0 26px 50px -24px #000,0 0 0 1px rgba(207,232,169,.07),0 0 40px -14px rgba(207,232,169,.14);
+--e3:0 48px 90px -30px #000,0 0 0 1px rgba(207,232,169,.12);
+--topedge:linear-gradient(90deg,rgba(242,247,234,.45),rgba(242,247,234,.10) 45%,rgba(242,247,234,0) 85%)}
+
+/* Level 2: raised surfaces. Lighter than the page, with a lit top edge. */
+.panel,.case,.pg,.dark,.svcflow,.grid button{box-shadow:var(--e1);border-color:var(--edge1)}
+.panel,.case{background:var(--sheen),radial-gradient(120% 140% at 0% 0%,rgba(207,232,169,.11) 0,var(--surf1) 45%)}
+.pg{background:var(--sheen),radial-gradient(120% 160% at 0% 0%,rgba(207,232,169,.14) 0,var(--surf1) 50%)}
+.svcflow,.grid button{background:var(--surf1)}
+.dark{position:relative;overflow:hidden;background:var(--sheen),radial-gradient(120% 140% at 0% 100%,#55753A 0,var(--surf1) 55%)}
+/* Only on cards that clip to their own radius. .svcflow deliberately has no
+   overflow:hidden (the .ft tooltips must escape it), so a straight 1px bar
+   would stick out past its rounded corners. Its top edge comes from the
+   inset highlight in --e1 instead, which follows the radius. */
+.panel:before,.case:before,.dark:before{content:"";position:absolute;inset:0 0 auto 0;height:1px;background:var(--topedge);pointer-events:none;z-index:1}
+
+/* Level 3: floating. Lighter still, so hover reads as the card coming forward. */
+.case:hover,.grid button:hover{box-shadow:var(--e2);border-color:var(--edge2)}
+.case:hover{background:var(--sheen),radial-gradient(120% 140% at 0% 0%,rgba(207,232,169,.14) 0,var(--surf2) 45%)}
+.case{transition:opacity .8s var(--ease),transform .8s var(--ease),background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.ints li,.svccase{transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease)}
+.ints li{background:rgba(207,232,169,.05);border-color:var(--edge1)}
+.ints li:hover,.svccase:hover{transform:translateY(-3px);box-shadow:var(--e2);border-color:var(--edge2)}
+.ints li:hover{background:rgba(207,232,169,.10)}
+#lb img{box-shadow:var(--e3)}
+
+/* Level 1: recessed. Darker than its own card, so it reads as cut into it. */
+.case .stats{background:rgba(5,9,4,.55);border-color:var(--edge1);box-shadow:inset 0 2px 5px -2px #000}
+.ftabs,.chips button,.more-btn,.tags li{box-shadow:inset 0 1px 0 rgba(242,247,234,.06)}
+
+/* Radii: fewer steps */
+.grid button,#lb img{border-radius:var(--r-sm)}
+.svccase{border-radius:var(--r-md)}
+
+/* Type scale. The section heading has to outrank the heading inside a panel;
+   before this, .svctext h3 was 41.6px against an .svc h2 of 35.2px. */
+h2{font-size:clamp(1.75rem,3.6vw,2.6rem)}
+.svctext h3{font-size:clamp(1.35rem,2.5vw,2rem)}
+.panel h2{font-size:clamp(1.15rem,1.8vw,1.4rem)}
+.marqlab,.svctext h4,.case h4,.cgrid h4,.svccl,.fnav h3,.subs h3,.more-btn{font-size:.75rem}
+
+/* One vertical rhythm, instead of five different section paddings */
+section{padding:var(--s6) 0}
+.marq{padding:0 0 var(--s4)}
+.proof{padding:var(--s5) 0 0}
+.phead{padding:var(--s5) 0 var(--s4)}
+.ahero{padding:var(--s4) 0 var(--s5)}
+.dark{margin:var(--s3) 0 var(--s6)}
+.case,.panel{margin-bottom:var(--s3)}
+footer{margin-top:var(--s6)}
+
 /* Mobile. Must stay at the end of the file: earlier media queries for .ahero
    are defeated by unconditional rules written further down. */
 @media(max-width:760px){
+section{padding:var(--s5) 0}
 .ahero{grid-template-columns:minmax(0,1fr);gap:32px;padding:24px 0 48px}
 .fut{justify-self:stretch}
-.futcard{width:min(300px,78%)}
+.futcard{width:min(240px,62%)}
 .subs{grid-template-columns:minmax(0,1fr);gap:26px}
 .ints{grid-template-columns:repeat(2,minmax(0,1fr))}
 .ints li{padding:20px 12px}
