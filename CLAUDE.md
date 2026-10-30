@@ -18,7 +18,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 ## Page notes
 - Home: hero with name, subtitle, "Open to Demand Gen and Growth roles in B2B" pill and buttons on the left; cut-out photo with two rotating rings of tool logos on the right; small green flash in the top-left corner. Then a moving strip of client logos, career stats (4+ years, €4M+ pipeline, 20+ brands), the What I do diagram, highlight card (144 MQLs, €150K+ pipeline).
 - Work: four numbered cases. Left column is number, title, client logos; right column is the intro, stats and the "What I did" accordion. Order: Impact Negotiation Group (Sprints & Sneakers client), SurePay (via Dapper), Founder Sales course (Startupbootcamp x Academy of the Future), Investor Pipeline (Startupbootcamp). SurePay has no stats block on purpose: the only numbers available described the work, not the outcome, so they were removed rather than faked. Waiting on a real result figure from Dapper.
-- Ad library: 18 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other.
+- Ad library: 18 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other. No hero glow here, on purpose.
 - About: player card hero, experience timeline, skills, tools, education, "Other interests" cards, closing CTA. See "About page redesign" below.
 - Contact: email, LinkedIn, based in Amsterdam, open to roles.
 
@@ -40,15 +40,19 @@ Built differently from the plan that was on hold. The country-by-country "short
 version" and the travel photos were dropped; Miguel went another way.
 
 What is actually on the page now, in order:
-1. Hero: "But who's Miguel?" plus the sales-to-marketing lines, beside a FUT-style
-   player card (player-card.png) of him as a toddler. Caption: "Based on the Big Five
+1. Hero: "But who's Miguel?" plus the sales-to-marketing lines, ending on
+   "Portuguese, based in Amsterdam." Beside it a FUT-style player card
+   (player-card.png) of him as a toddler, captioned "Stats based on the Big Five
    (OCEAN) personality test."
-2. Experience timeline.
-3. Skills and Tools, side by side.
-4. Education.
-5. Other interests: six cards, each a 3D icon plus one line. Order is fixed and
+2. Experience card. The timeline, then a thin divider, then Languages and Education
+   as two columns of small chips inside the SAME card (.subs). They were separate
+   cards once; Miguel asked for them folded in to save vertical space.
+3. Skills and Tools, side by side, both using .panel.slim.
+4. Other interests: six cards, each a 3D icon plus one line. Order is fixed and
    deliberate: Basketball, Traveling, History, Chess, Cinema, Surf. Surf is last.
-6. Closing CTA "Still here?" with Email, LinkedIn and See the work.
+5. Closing CTA "Still here?" — "If you've made it this far, there's probably a
+   reason. Let's talk!" with two buttons only, Email me and See my work. LinkedIn
+   was deliberately removed from here: three options diluted the ask.
 
 Decisions taken:
 - The spinning tool-logo orbit was dropped from About. It is the home page's signature
@@ -59,6 +63,11 @@ Decisions taken:
   This was raised with Miguel in full and he chose to keep 62. Decision closed, do not
   reopen it.
 - A baby.png was added early on and is now unused. Left in the folder on purpose.
+- The "currently working toward HubSpot Academy certification" line was removed because
+  it was not true. Education is now one chip: Bachelor's in Tourism Management. The
+  University of Split exchange was dropped with it; Miguel knows and can have it back.
+- Country flags are system emojis. They render on macOS but Windows Chrome draws the
+  two country letters instead. Miguel was told and chose to keep the emojis.
 
 ## Rules
 - Never invent numbers, quotes or claims. Only use what Miguel provides.

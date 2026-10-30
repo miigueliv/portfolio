@@ -211,6 +211,14 @@ footer{position:relative;margin-top:96px;border-top:1px solid var(--line);paddin
 .panel h2{font-size:1.15rem;margin-bottom:1.6rem}
 .panel .tl li:before{box-shadow:0 0 12px rgba(207,232,169,.6)}
 .panel .tl li:last-child{padding-bottom:0}
+.panel.slim{padding:26px 32px}
+.panel.slim h2{margin-bottom:1rem}
+.panel.slim .tags{gap:8px}
+.panel.slim .tags li{padding:5px 14px;font-size:.9rem}
+.subs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin-top:30px;padding-top:26px;border-top:1px solid var(--line)}
+.subs h3{margin-bottom:12px;font:600 .72rem "Instrument Sans",system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.chips li{font-size:.88rem;padding:5px 14px}
+.chips b{font-weight:600;color:var(--acc);margin-left:3px}
 .panel .tags li{background:rgba(7,12,5,.6)}
 .panel .tags li:hover{border-color:var(--acc)}
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
