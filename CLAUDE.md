@@ -17,7 +17,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 
 ## Page notes
 - Home: hero with name, subtitle, "Open to Demand Gen and Growth roles in B2B" pill and buttons on the left; cut-out photo with two rotating rings of tool logos on the right; small green flash in the top-left corner. Then a moving strip of client logos, career stats (4+ years, €4M+ pipeline, 20+ brands), the What I do diagram, highlight card (144 MQLs, €150K+ pipeline).
-- Work: four numbered cases. Left column is number, title, client logos; right column is the intro, stats and the "What I did" accordion. Order: Impact Negotiation Group (Sprints & Sneakers client), SurePay (via Dapper), Founder Sales course (Startupbootcamp x Academy of the Future), Investor Pipeline (Startupbootcamp). SurePay has no stats block on purpose: the only numbers available described the work, not the outcome, so they were removed rather than faked. Waiting on a real result figure from Dapper.
+- Work: four numbered cases. Left column is number, title, client logos; right column is the intro, stats and the "What I did" accordion. Order: Impact Negotiation Group (Sprints & Sneakers client), SurePay (via Dapper), Founder Sales course (Startupbootcamp x Academy of the Future), Investor Pipeline (Startupbootcamp). SurePay has no stats block on purpose: see the effort-vs-outcome rule below.
 - Ad library: 18 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other. No hero glow here, on purpose.
 - About: player card hero, experience timeline, skills, tools, education, "Other interests" cards, closing CTA. See "About page redesign" below.
 - Contact: email, LinkedIn, based in Amsterdam, open to roles.
@@ -59,13 +59,10 @@ Decisions taken:
   move and repeating it made About feel like a rerun.
 - OVERRIDES the earlier "small flat line icons in accent green only" rule. Miguel
   supplied full-colour 3D claymation-style renders and they are what is on the page.
-- The card says Structure 62. The OCEAN test actually scored Conscientiousness 50.
-  This was raised with Miguel in full and he chose to keep 62. Decision closed, do not
-  reopen it.
+- The player card stats are final. Decision closed, do not reopen it.
 - A baby.png was added early on and is now unused. Left in the folder on purpose.
-- The "currently working toward HubSpot Academy certification" line was removed because
-  it was not true. Education is now one chip: Bachelor's in Tourism Management. The
-  University of Split exchange was dropped with it; Miguel knows and can have it back.
+- Education is one chip: Bachelor's in Tourism Management. Nothing else goes in there.
+  The University of Split exchange was dropped; Miguel knows and can have it back.
 - Country flags are system emojis. They render on macOS but Windows Chrome draws the
   two country letters instead. Miguel was told and chose to keep the emojis.
 
@@ -89,7 +86,7 @@ Decisions taken:
 - Miguel keeps http://localhost:4321 open in a browser tab. The link only works while the preview server is running.
 
 ## Open items
-- Waiting on Miguel: a real outcome metric for the SurePay case, from Dapper
+- Waiting on Miguel: a result figure for the SurePay case
 - Waiting on Miguel: five extra client logos to add to the home logo strip, saved into clients/
 - Waiting on Miguel: CV PDF, for a Download CV button
 - Waiting on Miguel: 2 to 3 testimonials with name, title and permission
@@ -99,4 +96,4 @@ Decisions taken:
 - Later, once Miguel approves publishing: GitHub repo, GitHub Pages, then an og:image share preview with the live URL
 - The Experience timeline on About is still just five job titles and dates, a worse version of his LinkedIn. It needs one outcome line per role. Waiting on Miguel's numbers.
 - The hero line "a camera that came before the marketing career" is never paid off anywhere on the site. He freelanced as a photographer, which is a real differentiator for someone running ads. Worth a section of his own photos.
-- great-guy.png is a near-exact copy of the Great Place To Work(R) badge, red and navy, with the (R) symbol intact. It is the only non-green element on the site. This was raised with Miguel twice; he wants it kept as it is. Do not offer to recolour it again.
+- great-guy.png stays exactly as it is, red and navy. It is the only non-green element on the site. Raised with Miguel twice; decision closed. Do not offer to recolour it again.
