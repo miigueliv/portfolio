@@ -1,6 +1,6 @@
 # Miguel Rodrigues portfolio
 
-Static portfolio site for Miguel Rodrigues, B2B demand generation marketer in Amsterdam. Goal: get recruiters to see him as a strong candidate for Demand Gen and Growth roles in B2B. Hosting target: GitHub Pages (free). Not deployed yet.
+Static portfolio site for Miguel Rodrigues, B2B demand generation marketer in Amsterdam. Goal: get recruiters to see him as a strong candidate for Demand Gen and Growth roles in B2B. LIVE at https://miigueliv.github.io/portfolio/ since 30 Oct 2026, on GitHub Pages from the main branch, root folder. Every push to main redeploys the public site in a few minutes, so a mistake on main is a mistake recruiters can see.
 
 ## Stack
 Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in a browser to preview.
@@ -77,9 +77,9 @@ Decisions taken:
 ## How we work (agreed with Miguel)
 - The folder is the source of truth. It is a git repo, so every change is reversible.
 - Save points: at the end of each working session, update this file and make one commit summarising what changed. Miguel is new to git, so explain in plain language and never run destructive commands without asking.
-- Backed up to GitHub: git@github.com:miigueliv/portfolio.git (PRIVATE repo, SSH key auth). After saving a checkpoint, also run `git push` so the backup stays current.
-- The repo being private is deliberate. Do not make it public, and do not enable GitHub Pages, until Miguel explicitly says he wants the site live.
-- Do not deploy or publish anything until Miguel explicitly says so.
+- GitHub: git@github.com:miigueliv/portfolio.git (PUBLIC since 30 Oct 2026, SSH key auth). After saving a checkpoint, also run `git push`.
+- `git push` is now a deploy, not just a backup. Always check with Miguel before pushing, and say plainly that it will go live.
+- The repo is public, so every file and the whole commit history are readable by anyone. Never put a credential, a client's private number or anything Miguel would not want a recruiter to read into this folder. Miguel was told the old history still contains earlier internal notes and chose to accept that. Decision closed.
 - Preview with the "portfolio" server in .claude/launch.json (python3 http.server on port 4321, bound to 127.0.0.1 so it stays private).
 - ALWAYS start that preview server at the beginning of a session and give Miguel the link: http://localhost:4321. He should never have to ask to see his own site.
 - ALWAYS show the result after a visual change: reload the preview and post a screenshot. Do not describe a change in words only. If Miguel cannot see it, it is not done.
@@ -93,7 +93,9 @@ Decisions taken:
 - Waiting on Miguel: a "My role" line per case
 - Decide: "ICP Research" is currently the first node in BOTH flows with different tooltips. Suggested fix: "Audience Research" for Demand generation, "Account Research" for Demand capture. Miguel has not chosen yet.
 - Confirm which MQL figure was changed to make 144 (quiz set to 21)
-- Later, once Miguel approves publishing: GitHub repo, GitHub Pages, then an og:image share preview with the live URL
+- NEXT: og:image and og:url. Pasting the live link into LinkedIn or WhatsApp currently shows an empty rectangle. This matters now that Miguel is sending the link to recruiters.
+- NEXT: the About page is broken on mobile. .ahero does not stack (a later unconditional rule beats the media query), .ints is 3 crushed columns, .subs is 2. The other four pages are fine. Audited at 375x812, not fixed.
+- baby.png and me.jpg are in the repo but used by no page.
 - The Experience timeline on About is still just five job titles and dates, a worse version of his LinkedIn. It needs one outcome line per role. Waiting on Miguel's numbers.
 - The hero line "a camera that came before the marketing career" is never paid off anywhere on the site. He freelanced as a photographer, which is a real differentiator for someone running ads. Worth a section of his own photos.
 - great-guy.png stays exactly as it is, red and navy. It is the only non-green element on the site. Raised with Miguel twice; decision closed. Do not offer to recolour it again.
