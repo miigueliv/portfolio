@@ -6,11 +6,15 @@ Static portfolio site for Miguel Rodrigues, B2B demand generation marketer in Am
 Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in a browser to preview.
 - Pages: index.html, work.html, ads.html, about.html, contact.html
 - Shared: style.css, script.js
-- Images: banner.jpg (green flash), me-cut.webp (cut-out photo), me.jpg, player-card.webp (About hero), og.jpg (link preview card), great-guy.png (footer badge), logos/ (tool logos), clients/ (client logos), ads/ (ad-01 to ad-18), icons/ (interest icons)
+- Images: banner.jpg (green flash), me-cut.webp (cut-out photo), me.jpg, player-card.webp (About hero), og.jpg (link preview card), great-guy.png (footer badge), logos/ (tool logos), clients/ (client logos), ads/ (ad-01 to ad-21), icons/ (interest icons)
 - Images Miguel supplies are huge. Downscale before use with `sips -Z 240 file.png` (macOS built-in, keeps transparency). There is no PIL or ImageMagick on this machine. The interest icons went from 8.7 MB to 308 KB this way.
 - `sips` cannot write WebP: `sips -s format webp` silently produces no file. To make a WebP, render it through headless Chrome instead: a tiny HTML page that draws the image on a canvas and prints `canvas.toDataURL('image/webp',0.85)` into a div, then
   `"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --allow-file-access-from-files --virtual-time-budget=15000 --dump-dom file:///tmp/enc.html`
   and base64-decode the result. This is how player-card went from 2222 KB to 106 KB.
+- In a Claude Code cloud session (Linux) there is no `sips` and no macOS Chrome, but
+  Pillow IS there and writes WebP directly. The three Polpo ads added on 10 Nov 2026
+  went from 1500x1500 PNG (1.1 to 2.5 MB each) to 800x800 WebP at quality 85, method 6,
+  about 47 KB each, which matches the other ads. Same job, one line of Python.
 - Headless Chrome is also the reliable way to take a real desktop screenshot: `--window-size=1280,860 --screenshot=/tmp/x.png http://localhost:4321/index.html`. The preview tool's own screenshot only captures the leftmost ~400px when the viewport is wide.
 
 ## Design system (keep unless Miguel asks)
@@ -34,7 +38,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step. Open index.html in 
 ## Page notes
 - Home: hero with name, subtitle, "Open to Demand Gen and Growth roles in B2B" pill and buttons on the left; cut-out photo with two rotating rings of tool logos on the right; small green flash in the top-left corner. Then a moving strip of client logos, career stats (4+ years, €4M+ pipeline, 20+ brands), the What I do diagram, highlight card (144 MQLs, €150K+ pipeline).
 - Work: four numbered cases. Left column is number, title, client logos; right column is the intro, stats and the "What I did" accordion. Order: Impact Negotiation Group (Sprints & Sneakers client), SurePay (via Dapper), Founder Sales course (Startupbootcamp x Academy of the Future), Investor Pipeline (Startupbootcamp). SurePay has no stats block on purpose: see the effort-vs-outcome rule below.
-- Ad library: 18 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other. No hero glow here, on purpose. Under the filters a `.fcount` line with `role="status"` announces how many ads are showing. Clicking an ad opens `#lb`, a real dialog: `role="dialog"`, `aria-modal`, a 48x48 close button, focus moves into it, Tab is trapped on the close button, and Escape returns focus to the ad that was clicked.
+- Ad library: 21 ads, 3 per row, filters: All, Impact Negotiation Group, Polpo, TripCreator, Other. No hero glow here, on purpose. Under the filters a `.fcount` line with `role="status"` announces how many ads are showing. Clicking an ad opens `#lb`, a real dialog: `role="dialog"`, `aria-modal`, a 48x48 close button, focus moves into it, Tab is trapped on the close button, and Escape returns focus to the ad that was clicked.
 - About: player card hero, experience timeline, skills, tools, education, "Other interests" cards, closing CTA. See "About page redesign" below.
 - Contact: email, LinkedIn, based in Amsterdam, open to roles.
 
