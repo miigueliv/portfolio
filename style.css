@@ -403,10 +403,51 @@ section{padding:var(--s6) 0}
 .case,.panel{margin-bottom:var(--s3)}
 footer{margin-top:var(--s6)}
 
+/* ---- Flow backgrounds (flow.js) ----
+   flow.js adds a canvas as the first thing in <body> for each wave and puts
+   .flowon (hero wave is running) and .flowfoot (footer wave is running) on
+   <html>. Without WebGL none of the .flowon/.flowfoot rules apply.
+   z-index:-1 on the root keeps a canvas above the page colour and below
+   everything else, so nothing needs lifting over it. */
+.flowbg{position:absolute;z-index:-1;top:0;left:0;width:100%;height:0;display:block;pointer-events:none}
+.flowon .hero2:before{display:none}
+/* Copy comes first. A soft dark pool sits behind the hero copy, so when the
+   mouse drags bright green under the title it is dimmed there and the text
+   keeps its contrast. */
+.hero2>div{position:relative;max-width:700px}
+.flowon .hero2>div:before{content:"";position:absolute;z-index:-1;inset:-90px -150px -90px -220px;pointer-events:none;background:radial-gradient(closest-side,rgba(7,12,5,.84) 0,rgba(7,12,5,.74) 62%,rgba(7,12,5,0) 100%)}
+/* The wordmark becomes a dark cut-out over the wave. The thin outline keeps
+   the tops of the letters visible where they rise above the green. */
+.flowfoot .fword{color:#0A1206;-webkit-text-stroke:1.5px #2E4A1C;paint-order:stroke fill}
+
+/* ---- Home hero without the photo ----
+   The photo and the logo orbit moved to the tools section further down, so
+   the hero is one column of copy and the wave is the visual. */
+.hero2{grid-template-columns:minmax(0,1fr);min-height:clamp(330px,46vw,560px)}
+.hero2 h1{font-size:clamp(1.6rem,5.4vw,4.2rem)}
+.hero2 .actions{flex-direction:row;flex-wrap:wrap;gap:12px}
+.hero2 .btn{padding:13px 22px;font-size:.95rem}
+.hero2 .btn.ghost{margin:0}
+
+/* ---- Tools section (home): photo with the logo orbit, then a logo wall ---- */
+.tools{padding-top:0}
+.toolsgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
+.toolstext p{color:var(--mute);max-width:38ch;margin-top:var(--s2)}
+.tools .orbitstage{max-width:470px}
+.wall{display:grid;gap:14px;margin-top:var(--s4);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
+.wallrow{display:flex;width:max-content;animation:marq 70s linear infinite}
+.wallrow.rev{animation-direction:reverse}
+.wall:hover .wallrow{animation-play-state:paused}
+.wallrow ul{display:flex;list-style:none;margin:0;padding:0}
+.wallrow li{display:flex;align-items:center;gap:10px;margin-right:14px;padding:9px 18px 9px 9px;border-radius:999px;background:var(--surf1);border:1px solid var(--edge1);color:var(--ink);font-size:.92rem;font-weight:600;white-space:nowrap}
+.wallrow img{width:30px;height:30px;border-radius:24%;object-fit:contain}
+
 /* Mobile. Must stay at the end of the file: earlier media queries for .ahero
    are defeated by unconditional rules written further down. */
 @media(max-width:760px){
 section{padding:var(--s5) 0}
+.toolsgrid{grid-template-columns:minmax(0,1fr);gap:26px}
+.tools .orbitstage{max-width:290px;justify-self:center}
 .ahero{grid-template-columns:minmax(0,1fr);gap:32px;padding:24px 0 48px}
 .fut{justify-self:stretch}
 .futcard{width:min(240px,62%)}

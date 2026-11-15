@@ -94,6 +94,52 @@ Decisions taken:
 - Country flags are system emojis. They render on macOS but Windows Chrome draws the
   two country letters instead. Miguel was told and chose to keep the emojis.
 
+## Flow backgrounds, tools section (LIVE since 15 Nov 2026)
+Miguel asked for the hero motion from vistadigital.si (a gradient the mouse
+pushes around like wet paint) in his own green, then asked for it stronger, at
+the bottom of the site too, and for his photo to move out of the hero. He
+reviewed it on localhost and asked for it to go live the same day.
+
+What changed:
+- `flow.js` (new, loaded on all five pages after script.js). WebGL2, written
+  from scratch, no image files. It adds one `<canvas class="flowbg">` per wave
+  as the first children of `<body>` and puts `.flowon` (hero wave running) and
+  `.flowfoot` (footer wave running) on `<html>`. With no WebGL2 nothing is
+  added, the old green flash (`.hero2:before`) stays and the footer looks as it
+  did, so do not delete those rules.
+- Hero wave (home only): a ridge rising from bottom left to the right. It ends
+  30px below the hero so it has faded before the "Brands I've worked with" label.
+- Footer wave (every page): only the band behind the big "Miguel" wordmark,
+  mirrored. It starts at the top of the wordmark on purpose, so the footer
+  links and the legal line always sit on plain dark. With `.flowfoot` the
+  wordmark is a dark cut-out with a thin green outline; the outline is what
+  keeps the letter tops visible above the green.
+- **Copy contrast is the priority (Miguel's words: the copy is the most
+  important thing).** `.flowon .hero2>div:before` is a soft dark pool behind
+  the hero copy that dims any green dragged under the title. If the motion is
+  ever made stronger again, check the title with the green pushed over it.
+- The photo and logo orbit moved OUT of the home hero into a new
+  `<section class="tools">` after What I do: heading "Proficient in the best
+  B2B tools" (Miguel's wording), one line of copy, the photo with the orbit,
+  then `.wall`, two rows of all 15 tool logos with names moving in opposite
+  directions. Each `.wallrow` holds two identical `<ul>`s for a seamless loop,
+  same trick as `.marq`; keep the two lists identical. The hero is now one
+  column of copy. The older hero-photo notes above (side by side, never stack
+  above 560px) no longer apply to the hero; the photo-fade note still applies
+  to the figure in its new place.
+- Knobs in flow.js: `.3` in DRAW is how far the paint moves, `.5` in FLOW is
+  how fast it settles (lower is slower), `.05` is the brush size, `.8` in
+  `uPush` is how hard the mouse grabs. Wave position per place is `shape` in
+  the two `make()` calls at the bottom.
+- Respects reduced motion (one still frame) and pauses when off screen.
+- Testing trap: when the Browser pane is hidden, requestAnimationFrame never
+  fires and `scroll-behavior:smooth` never arrives, so the wave looks frozen
+  in screenshots. That is the pane, not a bug. To test there, temporarily
+  expose `frame` from `make()` and call it by hand while dispatching
+  `pointermove` events; scroll with `behavior:'instant'`.
+- Miguel approved the line under the tools heading ("The stack I use to find
+  the right accounts, reach them, and measure what worked.").
+
 ## Rules
 - Never invent numbers, quotes or claims. Only use what Miguel provides.
 - No phone number or references' contact details on the site.
