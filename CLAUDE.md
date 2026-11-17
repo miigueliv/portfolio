@@ -107,7 +107,8 @@ What changed:
   `.flowfoot` (footer wave running) on `<html>`. With no WebGL2 nothing is
   added, the old green flash (`.hero2:before`) stays and the footer looks as it
   did, so do not delete those rules.
-- Hero wave (home only): a ridge rising from bottom left to the right. It ends
+- Hero wave (home only at first, now every page: see "Top wave on every page"
+  below): a ridge rising from bottom left to the right. It ends
   30px below the hero so it has faded before the "Brands I've worked with" label.
 - Footer wave (every page): only the band behind the big "Miguel" wordmark,
   mirrored. It starts at the top of the wordmark on purpose, so the footer
@@ -139,6 +140,53 @@ What changed:
   `pointermove` events; scroll with `behavior:'instant'`.
 - Miguel approved the line under the tools heading ("The stack I use to find
   the right accounts, reach them, and measure what worked.").
+
+## Top wave on every page (17 Nov 2026)
+Miguel asked for the home page background motion on the rest of the site, same
+motion top and bottom. The footer wave was already on all five pages; only the
+top wave was home-only. Nothing in the HTML changed, only `flow.js` and
+`style.css`.
+
+- `flow.js` now picks the top wave's anchor with
+  `document.querySelector('.hero2, .glowhead, .phead')`: the hero on Home,
+  `.glowhead` on Work, About and Contact, the `.phead` block on the Ad library.
+  The band still runs from the top of the page to 30px below that header.
+- **Short headers get a 400px floor.** Work, Ads and Contact headers are about
+  207px against the hero's 560px, so without a floor the band is only ~313px,
+  the ridge flattens into a horizontal stripe straight through the title and
+  the copy loses contrast. Measured on Work at 1280px: 330 is a stripe over the
+  copy, 470 pushes the ridge down into the first case card, 400 is right. If
+  you change a page header's height, re-check this number.
+- **Copy contrast, same rule as home.** Every page gets the dark pool behind
+  its copy. On About the old green flash is switched off and the pool goes on
+  `.ahero>div`. On Work and Contact the pool IS `.glowhead:before`, the same
+  pseudo element the flash used, so that rule has to reset every glow property
+  (transform, mask, opacity, width, height) or the flash leaks through.
+- **The Ad library is the awkward one.** Its `.phead` is a block INSIDE
+  `#main`, and the filter chips and the `.fcount` "Showing all 21 ads" line are
+  siblings BELOW it, sitting right on the bright ridge. The pool cannot go on
+  `.phead` there: `.phead` carries `isolation:isolate`, which makes it paint
+  ABOVE its non-positioned siblings, so the pool dimmed the chips and the count
+  line themselves instead of the green behind them. It took a red-background
+  probe to see this. The pool goes on `section#main` instead, where `z-index:-1`
+  puts it behind all of that content. `section#main` does not match Work or
+  Contact, where the header IS `#main`, and the lightbox `#lb` sits outside the
+  section so isolating it is safe.
+- The ads pool uses an explicitly sized radial
+  (`820px 400px at 280px 210px`) rather than `closest-side`. With
+  `closest-side` on a 1300x560 box the count line fell at ~81% of the gradient,
+  about .37 alpha, nowhere near enough over bright green. The explicit size
+  also keeps the pool off the right-hand side so the ridge stays bright there.
+- **`.flowon nav{position:relative;z-index:1}`.** The page header forms a
+  stacking context and comes after the nav in the DOM, so its pool painted on
+  top of the nav and dimmed the "Miguel Rodrigues" logo (measured: 242,247,234
+  down to 54,59,50). Lifting the nav puts it back on top. If you ever add a
+  pool to another block, check the logo.
+- Fallbacks are unchanged and were re-tested: with no WebGL2 nothing is added,
+  `.flowon` is never set, so Work, About and Contact keep the original green
+  flash and the Ad library stays plain, which is the deliberate "no glow here"
+  rule. Reduced motion still draws one still frame.
+- Checked at 1280, 1440 and 1680 wide, and at 390 for breakage only.
 
 ## Rules
 - Never invent numbers, quotes or claims. Only use what Miguel provides.

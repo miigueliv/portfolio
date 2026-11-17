@@ -420,6 +420,35 @@ footer{margin-top:var(--s6)}
    the tops of the letters visible where they rise above the green. */
 .flowfoot .fword{color:#0A1206;-webkit-text-stroke:1.5px #2E4A1C;paint-order:stroke fill}
 
+/* The page header forms a stacking context (isolation:isolate) and comes
+   AFTER the nav in the DOM, so its dark copy pool paints on top of the nav and
+   dims the "Miguel Rodrigues" logo. Lifting the nav puts it back on top. */
+.flowon nav{position:relative;z-index:1}
+
+/* ---- Top wave on the inner pages (Work, Ad library, About, Contact) ----
+   Same canvas, same copy-first rule as Home. The old green flash
+   (.glowhead:before) is replaced: on About it is switched off and the dark
+   pool goes behind the copy column, on the .phead pages the same pseudo
+   element IS the pool, so every glow property it had has to be reset here. */
+.flowon .ahero:before{display:none}
+.ahero>div{position:relative}
+.flowon .ahero>div:before{content:"";position:absolute;z-index:-1;inset:-90px -150px -80px -220px;pointer-events:none;background:radial-gradient(closest-side,rgba(7,12,5,.84) 0,rgba(7,12,5,.74) 62%,rgba(7,12,5,0) 100%)}
+.flowon .phead{position:relative;isolation:isolate}
+.flowon .phead:before{content:"";display:block;position:absolute;z-index:-1;inset:-96px -120px -86px -200px;width:auto;height:auto;transform:none;opacity:1;background:radial-gradient(closest-side,rgba(7,12,5,.84) 0,rgba(7,12,5,.74) 62%,rgba(7,12,5,0) 100%);-webkit-mask-image:none;mask-image:none;pointer-events:none}
+/* Ad library only. There the .phead is a block INSIDE #main and the filter
+   chips and the "Showing all 21 ads" count line are its siblings below it, so
+   the count line lands on the bright ridge. The pool cannot go on .phead
+   here: .phead gets isolation:isolate above, which makes it paint ABOVE its
+   non-positioned siblings, so the pool would dim the chips and the count line
+   themselves and make them harder to read, not easier. It goes on the section
+   instead, where z-index:-1 puts it behind all of that content. On Work and
+   Contact the header IS #main, so section#main does not match them, and the
+   lightbox #lb sits outside the section, so isolating it is safe. */
+.flowon #main>.phead{position:static;isolation:auto}
+.flowon #main>.phead:before{display:none}
+.flowon section#main{position:relative;isolation:isolate}
+.flowon section#main:before{content:"";position:absolute;z-index:-1;top:-96px;left:-200px;right:-120px;height:560px;pointer-events:none;background:radial-gradient(820px 400px at 280px 210px,rgba(7,12,5,.88) 0,rgba(7,12,5,.8) 42%,rgba(7,12,5,0) 100%)}
+
 /* ---- Home hero without the photo ----
    The photo and the logo orbit moved to the tools section further down, so
    the hero is one column of copy and the wave is the visual. */

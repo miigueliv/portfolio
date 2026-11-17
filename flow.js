@@ -154,12 +154,23 @@ document.addEventListener('visibilitychange',()=>{vis=!document.hidden;kick()});
 draw();
 return true}
 
-/* Home hero: from the very top of the page to just below the hero, so it
-   has faded out before the small "Brands I've worked with" label.
-   The ridge starts low on the left, under the copy, and rises to the right. */
-const hero=document.querySelector('.hero2');
-if(hero&&make({shape:[.27,.46,0,1],depth:1,place(){
-return{top:0,height:hero.getBoundingClientRect().bottom+scrollY+30}}}))root.classList.add('flowon');
+/* Top wave, every page: from the very top of the page to just below the page
+   header, so it has faded out before the content starts. On Home that header
+   is the hero and the band ends 30px below it, before the small "Brands I've
+   worked with" label. The other four pages use their own header: .glowhead on
+   Work, About and Contact, the .phead block on the Ad library.
+   The ridge starts low on the left, under the copy, and rises to the right.
+   Work, Ads and Contact have a short header (about 207px against the hero's
+   560px), so the band gets a 400px floor. Without it the band is only ~313px,
+   the ridge flattens into a horizontal stripe running straight through the
+   title and the copy loses contrast. Measured on Work at 1280px: 330 is a
+   stripe over the copy, 470 pushes the ridge down into the first case card.
+   400 keeps the rising shape, leaves the copy on dark and has faded by the
+   time the card starts. */
+const hero=document.querySelector('.hero2, .glowhead, .phead');
+if(hero){const floor=hero.classList.contains('hero2')?0:400;
+if(make({shape:[.27,.46,0,1],depth:1,place(){
+return{top:0,height:Math.max(hero.getBoundingClientRect().bottom+scrollY+30,floor)}}}))root.classList.add('flowon')}
 
 /* Footer: only the band behind the big "Miguel" wordmark, so the footer links
    and the legal line above it always stay on plain dark. Mirrored, so it
