@@ -234,10 +234,35 @@ Miguel reviewed the live home page and asked for three things. All three are in
 - GitHub: git@github.com:miigueliv/portfolio.git (PUBLIC since 30 Oct 2026, SSH key auth). After saving a checkpoint, also run `git push`.
 - `git push` is now a deploy, not just a backup. Always check with Miguel before pushing, and say plainly that it will go live.
 - The repo is public, so every file and the whole commit history are readable by anyone. Never put a credential, a client's private number or anything Miguel would not want a recruiter to read into this folder. Miguel was told the old history still contains earlier internal notes and chose to accept that. Decision closed.
-- Preview with the "portfolio" server in .claude/launch.json (python3 http.server on port 4321, bound to 127.0.0.1 so it stays private).
-- ALWAYS start that preview server at the beginning of a session and give Miguel the link: http://localhost:4321. He should never have to ask to see his own site.
-- ALWAYS show the result after a visual change: reload the preview and post a screenshot. Do not describe a change in words only. If Miguel cannot see it, it is not done.
-- Miguel keeps http://localhost:4321 open in a browser tab. The link only works while the preview server is running.
+- **Preview: READ THIS BEFORE SENDING MIGUEL A LINK. It has been got wrong in
+  five separate sessions and he has had to ask for a fix every time.**
+  Work on this site now happens in two different places, and the preview works
+  differently in each. Check which one you are in before you say anything.
+  - Run `uname` (or `hostname`). **`Darwin` = Miguel's own Mac.** Start the
+    server (`python3 -m http.server 4321 --bind 127.0.0.1` from the project
+    folder) and send him http://localhost:4321. That link is real and it works.
+  - **`Linux` (hostname `vm`) = a Claude Code CLOUD session.** The code is on a
+    container in the cloud, NOT on his Mac. `http://localhost:4321` typed into
+    HIS browser points at HIS Mac, where nothing is running, so the link is
+    dead on arrival. **Do not send him that URL.** Start the server anyway
+    (the container needs it for screenshots), then call the
+    `report_preview_port` tool with port 4321, which is what makes the preview
+    appear inside the Claude app. Tell him to use the preview pane in the app,
+    not a browser tab. Every cloud session starts a fresh empty container, so
+    the server from the last session is always gone; start it again.
+  - `.claude/launch.json` is referenced in older notes but is NOT in the repo.
+    Do not tell him to use it. Start the server with the plain command above.
+- ALWAYS show the result after a visual change: reload the preview and post a
+  screenshot. Do not describe a change in words only. If Miguel cannot see it,
+  it is not done. In a cloud session the screenshot is often the ONLY way he
+  can see the work, so it is not optional.
+- If Miguel wants the real http://localhost:4321 in his own browser tab back,
+  there are two ways and both are his call: run Claude Code on his Mac (desktop
+  app or `claude` in a terminal in the portfolio folder), or turn on Remote
+  Control on his Mac (Claude desktop app, Settings, Claude Code, Remote
+  Control) and share the portfolio folder, which lets a cloud session attach to
+  his machine. Until one of those is set up, `list_computer_folders` returns
+  nothing and the cloud session cannot reach his Mac at all.
 
 ## Open items
 - Waiting on Miguel: a result figure for the SurePay case
