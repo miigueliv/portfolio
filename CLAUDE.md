@@ -188,6 +188,38 @@ top wave was home-only. Nothing in the HTML changed, only `flow.js` and
   rule. Reduced motion still draws one still frame.
 - Checked at 1280, 1440 and 1680 wide, and at 390 for breakage only.
 
+## Hero spacing and the career stats row (19 Nov 2026)
+Miguel reviewed the live home page and asked for three things. All three are in
+`style.css` only; no HTML or JS changed.
+
+- **CTA spacing.** The two hero buttons were 12px apart, which on pills that
+  size reads as glued together. Now 18px (`.hero2 .actions` gap). `.btn.ghost`
+  margin-left went 12px to 18px as well, so the closing CTAs on Contact and
+  About match.
+- **Hero height.** The gap between the buttons and the "Brands I've worked
+  with" label was NOT padding: `.hero2` had `min-height:clamp(330px,46vw,560px)`
+  with the copy vertically centred, so about 145px of empty space sat under the
+  buttons. Now `clamp(300px,38vw,470px)` plus a `padding-bottom` of
+  `clamp(20px,2.6vw,36px)`. The logo strip moved up roughly 90px.
+  Note this also shortens the hero wave, because flow.js sizes the top band as
+  `hero.getBoundingClientRect().bottom + 30` with no floor for `.hero2`. The
+  ridge still rises correctly at 1440 and 1900; re-check it if the hero height
+  changes again.
+- **Career stats are no longer a panel.** `.pg` was one bordered, segmented
+  slab sitting directly under the low-opacity logo strip, and it fought the
+  flow wave behind it. It is now an open three-column row: a hairline rule
+  across the top of each stat, a bright accent tick on the left that runs the
+  full width on hover, a soft top-left green bloom (the card glow language,
+  without the box), and real gaps instead of edge-to-edge divider lines.
+  Numbers went from 3rem to 3.6rem max.
+  - `.pg` was removed from the `.panel,.case,.dark,...` elevation rule and lost
+    its `--surf1` background. It is not a raised surface any more.
+  - **Keep the `.pg` class and the `b[data-n]` markup.** script.js counts the
+    numbers up off exactly those two selectors. A screenshot taken mid-count
+    shows wrong figures (3+, 18+); that is the animation, not a bad number.
+  - At 760px and below the numbers are capped at `clamp(1.55rem,7vw,2.1rem)`,
+    because "€4M+" is `white-space:nowrap` and overflowed its column at 390px.
+
 ## Rules
 - Never invent numbers, quotes or claims. Only use what Miguel provides.
 - No phone number or references' contact details on the site.
